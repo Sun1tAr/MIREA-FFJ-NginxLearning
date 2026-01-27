@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGINX Тестовая Лаборатория</title>
+    <link rel="stylesheet" href="test-page.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="lab-container">
+    <!-- Заголовок лаборатории -->
+    <header class="lab-header">
+        <div class="lab-title">
+            <i class="fas fa-flask"></i>
+            <h1>NGINX Тестовая Лаборатория</h1>
+            <span class="lab-badge">Экспериментальная</span>
+        </div>
+        <p class="lab-subtitle">Тестируем возможности веб-сервера в контролируемой среде</p>
+    </header>
+
+    <!-- Навигация -->
+    <nav class="lab-nav">
+        <a href="/" class="nav-link">
+            <i class="fas fa-home"></i> Главная
+        </a>
+        <a href="/404.html" class="nav-link">
+            <i class="fas fa-exclamation-triangle"></i> 404 Тест
+        </a>
+        <a href="/monitor.html" class="nav-link">
+            <i class="fas fa-tachometer-alt"></i> Монитор
+        </a>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="lab-content">
+        <!-- Секция 1: Тесты HTTP статусов -->
+        <section class="test-section">
+            <h2><i class="fas fa-vial"></i> Тесты HTTP статусов</h2>
+            <div class="status-grid">
+                <div class="status-card success">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>200 OK</h3>
+                    <p>Стандартный ответ для успешных HTTP запросов</p>
+                    <a href="/test-page.html#ok" class="test-btn">Тест</a>
+                </div>
+                <div class="status-card redirect">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>301 Redirect</h3>
+                    <p>Постоянное перенаправление (Moved Permanently)</p>
+                    <a href="/old-page" class="test-btn">Тест</a>
+                </div>
+                <div class="status-card error">
+                    <i class="fas fa-ban"></i>
+                    <h3>403 Forbidden</h3>
+                    <p>Доступ запрещен</p>
+                    <a href="/secret" class="test-btn">Тест</a>
+                </div>
+                <div class="status-card not-found">
+                    <i class="fas fa-search-minus"></i>
+                    <h3>404 Not Found</h3>
+                    <p>Ресурс не найден</p>
+                    <a href="/non-existent-page" class="test-btn">Тест</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция 2: Тесты заголовков -->
+        <section class="test-section">
+            <h2><i class="fas fa-heading"></i> Тесты заголовков HTTP</h2>
+            <div class="header-tests">
+                <div class="header-test">
+                    <h3>User-Agent Detection</h3>
+                    <p>Проверка, как NGINX определяет ваш браузер</p>
+                    <div class="ua-display" id="ua-display">
+                        Загрузка...
+                    </div>
+                </div>
+                <div class="header-test">
+                    <h3>Cache-Control</h3>
+                    <p>Тест заголовков кэширования</p>
+                    <div class="cache-info">
+                        <p><strong>Cache-Control:</strong> <span id="cache-header">no-cache</span></p>
+                        <button class="cache-btn" onclick="toggleCache()">
+                            <i class="fas fa-sync-alt"></i> Переключить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция 3: Тест скорости -->
+        <section class="test-section">
+            <h2><i class="fas fa-tachometer-alt"></i> Тест скорости отдачи</h2>
+            <div class="speed-test">
+                <div class="speed-meter">
+                    <div class="speed-dial">
+                        <div class="speed-needle" id="speed-needle"></div>
+                    </div>
+                    <div class="speed-info">
+                        <h3 id="speed-value">0 MB/s</h3>
+                        <p>Скорость отдачи статики</p>
+                    </div>
+                </div>
+                <button class="speed-btn" onclick="runSpeedTest()">
+                    <i class="fas fa-play"></i> Запустить тест
+                </button>
+                <div class="speed-results" id="speed-results">
+                    <p>Нажмите кнопку для запуска теста скорости</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция 4: Логирование -->
+        <section class="test-section">
+            <h2><i class="fas fa-clipboard-list"></i> Логи доступа</h2>
+            <div class="log-simulator">
+                <div class="log-header">
+                    <h3><i class="fas fa-file-alt"></i> /var/log/nginx/access.log</h3>
+                    <button class="log-btn" onclick="addLogEntry()">
+                        <i class="fas fa-plus"></i> Добавить запись
+                    </button>
+                </div>
+                <div class="log-entries" id="log-entries">
+                    <div class="log-entry">
+                        <span class="log-ip">127.0.0.1</span>
+                        <span class="log-date">[27/Jan/2026:08:15:49 +0300]</span>
+                        <span class="log-request">"GET /test-page.html HTTP/1.1"</span>
+                        <span class="log-status">200</span>
+                        <span class="log-size">4521</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-ip">192.168.1.100</span>
+                        <span class="log-date">[27/Jan/2026:08:16:12 +0300]</span>
+                        <span class="log-request">"GET /styles.css HTTP/1.1"</span>
+                        <span class="log-status">200</span>
+                        <span class="log-size">7900</span>
+                    </div>
+                </div>
+                <div class="log-stats">
+                    <div class="stat">
+                        <i class="fas fa-eye"></i>
+                        <span>Записей: <strong id="log-count">2</strong></span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-check-circle"></i>
+                        <span>200 OK: <strong>2</strong></span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Ошибки: <strong>0</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция 5: Эксперименты -->
+        <section class="test-section">
+            <h2><i class="fas fa-magic"></i> Эксперименты с NGINX</h2>
+            <div class="experiments">
+                <div class="experiment">
+                    <h3>Gzip сжатие</h3>
+                    <p>Проверка сжатия контента</p>
+                    <div class="compression-test">
+                        <p>Исходный размер: <strong>7.9 KB</strong></p>
+                        <p>Сжатый размер: <strong id="compressed-size">...</strong></p>
+                        <div class="compression-bar">
+                            <div class="compression-fill" id="compression-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="experiment">
+                    <h3>Keep-Alive</h3>
+                    <p>Тестирование постоянных соединений</p>
+                    <div class="connection-test">
+                        <div class="connection-visual">
+                            <div class="connection-dot active"></div>
+                            <div class="connection-dot active"></div>
+                            <div class="connection-dot"></div>
+                            <div class="connection-dot"></div>
+                            <div class="connection-dot"></div>
+                        </div>
+                        <p>Активных соединений: <strong id="connections">2</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Информационная панель -->
+    <aside class="lab-sidebar">
+        <div class="sidebar-card">
+            <h3><i class="fas fa-info-circle"></i> О лаборатории</h3>
+            <p>Эта страница создана для тестирования различных функций NGINX в безопасной среде.</p>
+        </div>
+        <div class="sidebar-card">
+            <h3><i class="fas fa-shield-alt"></i> Безопасность</h3>
+            <p>Все тесты выполняются локально и не влияют на работу сервера.</p>
+        </div>
+        <div class="sidebar-card">
+            <h3><i class="fas fa-bug"></i> Отладка</h3>
+            <p>Используйте Developer Tools (F12) для просмотра сетевых запросов.</p>
+        </div>
+    </aside>
+
+    <!-- Футер -->
+    <footer class="lab-footer">
+        <p>
+            <i class="fas fa-code"></i>
+            Тестовая лаборатория NGINX | Сервер: nginx/1.18.0 (Ubuntu)
+        </p>
+        <p class="footer-tip">
+            <i class="fas fa-lightbulb"></i>
+            Подсказка: Проверьте консоль браузера для просмотра HTTP заголовков
+        </p>
+    </footer>
+</div>
+
+<script>
+    // Минимальный JS для тестовой страницы
+    let cacheEnabled = false;
+    let logCount = 2;
+    let speedTestRunning = false;
+
+    // Определение User-Agent
+    document.getElementById('ua-display').textContent =
+        navigator.userAgent.substring(0, 50) + '...';
+
+    // Переключение кэша
+    function toggleCache() {
+        cacheEnabled = !cacheEnabled;
+        document.getElementById('cache-header').textContent =
+            cacheEnabled ? 'max-age=3600' : 'no-cache';
+    }
+
+    // Тест скорости
+    function runSpeedTest() {
+        if (speedTestRunning) return;
+        speedTestRunning = true;
+
+        const needle = document.getElementById('speed-needle');
+        const value = document.getElementById('speed-value');
+        const results = document.getElementById('speed-results');
+
+        let speed = 0;
+        const interval = setInterval(() => {
+            speed += Math.random() * 5;
+            if (speed > 100) speed = 100;
+
+            const angle = (speed / 100) * 180 - 90;
+            needle.style.transform = `rotate(${angle}deg)`;
+            value.textContent = speed.toFixed(1) + ' MB/s';
+
+            if (speed >= 100) {
+                clearInterval(interval);
+                speedTestRunning = false;
+                results.innerHTML = `
+                    <p><i class="fas fa-check"></i> Тест завершен!</p>
+                    <p>Средняя скорость: <strong>${(Math.random() * 50 + 50).toFixed(1)} MB/s</strong></p>
+                `;
+            }
+        }, 50);
+    }
+
+    // Добавление логов
+    function addLogEntry() {
+        logCount++;
+        const logs = document.getElementById('log-entries');
+        const ips = ['192.168.1.', '10.0.0.', '172.16.0.'];
+        const methods = ['GET', 'POST', 'HEAD'];
+        const paths = ['/api/data', '/images/photo.jpg', '/scripts/app.js'];
+        const statuses = [200, 304, 404];
+
+        const ip = ips[Math.floor(Math.random() * ips.length)] + Math.floor(Math.random() * 255);
+        const now = new Date();
+        const date = now.toLocaleString('en-GB').replace(',', '');
+        const method = methods[Math.floor(Math.random() * methods.length)];
+        const path = paths[Math.floor(Math.random() * paths.length)];
+        const status = statuses[Math.floor(Math.random() * statuses.length)];
+        const size = Math.floor(Math.random() * 10000);
+
+        const logEntry = document.createElement('div');
+        logEntry.className = 'log-entry';
+        logEntry.innerHTML = `
+            <span class="log-ip">${ip}</span>
+            <span class="log-date">[${date}]</span>
+            <span class="log-request">"${method} ${path} HTTP/1.1"</span>
+            <span class="log-status ${status === 200 ? 'success' : status === 404 ? 'error' : 'warning'}">${status}</span>
+            <span class="log-size">${size}</span>
+        `;
+
+        logs.appendChild(logEntry);
+        document.getElementById('log-count').textContent = logCount;
+
+        // Анимация
+        logEntry.style.opacity = '0';
+        setTimeout(() => {
+            logEntry.style.transition = 'opacity 0.3s';
+            logEntry.style.opacity = '1';
+        }, 10);
+    }
+
+    // Тест сжатия
+    setTimeout(() => {
+        const original = 7900; // bytes
+        const compressed = Math.floor(original * (0.2 + Math.random() * 0.3));
+        document.getElementById('compressed-size').textContent =
+            (compressed / 1024).toFixed(1) + ' KB';
+
+        const ratio = (original - compressed) / original;
+        document.getElementById('compression-fill').style.width =
+            (ratio * 100) + '%';
+    }, 1000);
+
+    // Анимация соединений
+    setInterval(() => {
+        const dots = document.querySelectorAll('.connection-dot');
+        const active = Math.floor(Math.random() * 5) + 1;
+        document.getElementById('connections').textContent = active;
+
+        dots.forEach((dot, index) => {
+            if (index < active) {
+                dot.classList.add('active');
+                dot.classList.remove('inactive');
+            } else {
+                dot.classList.remove('active');
+                dot.classList.add('inactive');
+            }
+        });
+    }, 2000);
+</script>
+</body>
+</html>

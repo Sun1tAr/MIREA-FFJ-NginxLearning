@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Страница не найдена</title>
+    <link rel="stylesheet" href="404.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="error-container">
+    <div class="error-content">
+        <!-- Анимированный 404 -->
+        <div class="error-number">
+            <span class="digit">4</span>
+            <span class="digit zero">
+                    <div class="hole"></div>
+                    0
+                </span>
+            <span class="digit">4</span>
+        </div>
+
+        <h1 class="error-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Ой! Страница потерялась в космосе
+        </h1>
+
+        <p class="error-description">
+            Похоже, вы пытаетесь добраться до места, которого не существует.
+            Возможно, URL изменился или страница была удалена.
+        </p>
+
+        <!-- Комикс-пояснение -->
+        <div class="comic-panel">
+            <div class="comic-bubble">
+                <i class="fas fa-robot"></i>
+                <p>"Я NGINX, и я обыскал весь сервер, но не нашел эту страницу!"</p>
+            </div>
+            <div class="comic-image">🤖🔍📂</div>
+        </div>
+
+        <!-- Причины ошибки -->
+        <div class="reasons">
+            <h3><i class="fas fa-search"></i> Возможные причины:</h3>
+            <ul>
+                <li><i class="fas fa-keyboard"></i> Опечатка в адресе</li>
+                <li><i class="fas fa-link"></i> Устаревшая ссылка</li>
+                <li><i class="fas fa-folder"></i> Страница перемещена</li>
+                <li><i class="fas fa-ghost"></i> Призраки в сервере (шучу!)</li>
+            </ul>
+        </div>
+
+        <!-- Список доступных страниц -->
+        <div class="available-pages">
+            <h3><i class="fas fa-map-signs"></i> Вот что у нас есть:</h3>
+            <div class="page-links">
+                <a href="/" class="page-link">
+                    <i class="fas fa-home"></i>
+                    <span>Главная страница</span>
+                </a>
+                <a href="/test-page.html" class="page-link">
+                    <i class="fas fa-flask"></i>
+                    <span>Тестовая лаборатория</span>
+                </a>
+                <a href="/monitor.html" class="page-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Мониторинг NGINX</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Интерактивный поиск -->
+        <div class="search-box">
+            <h3><i class="fas fa-search-location"></i> Попробуйте найти:</h3>
+            <div class="search-container">
+                <input type="text" placeholder="Что ищем?" class="search-input" disabled>
+                <button class="search-btn" disabled>
+                    <i class="fas fa-rocket"></i> Поиск
+                </button>
+            </div>
+            <p class="search-hint">(Поиск не работает - это же статичная 404 страница!)</p>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats">
+            <div class="stat-item">
+                <i class="fas fa-clock"></i>
+                <span class="stat-label">Время сервера:</span>
+                <span class="stat-value" id="server-time">Загружается...</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-server"></i>
+                <span class="stat-label">Статус NGINX:</span>
+                <span class="stat-value running">Работает</span>
+            </div>
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="action-buttons">
+            <a href="/" class="btn primary-btn">
+                <i class="fas fa-arrow-left"></i> Вернуться на главную
+            </a>
+            <button onclick="location.reload()" class="btn secondary-btn">
+                <i class="fas fa-sync-alt"></i> Обновить страницу
+            </button>
+            <button class="btn fun-btn" onclick="showFunFact()">
+                <i class="fas fa-lightbulb"></i> Факт про 404
+            </button>
+        </div>
+
+        <!-- Факт (скрытый) -->
+        <div id="fun-fact" class="fun-fact hidden">
+            <i class="fas fa-info-circle"></i>
+            <strong>Знаете ли вы?</strong> Код 404 называется "Not Found" потому что
+            в первых веб-серверах комната 404 в CERN была комнатой для аппаратуры,
+            и когда что-то не находили, шутили "проверь в 404"!
+        </div>
+
+        <!-- Футер -->
+        <div class="error-footer">
+            <p>
+                <i class="fas fa-code"></i>
+                Эта страница 404 создана специально для изучения NGINX.
+                Сервер вернул статус: <code>HTTP/1.1 404 Not Found</code>
+            </p>
+            <p class="nginx-tip">
+                <i class="fas fa-tips"></i>
+                <strong>Для разработчиков:</strong> Эта страница сработала потому что в NGINX настроен
+                <code>error_page 404 /404.html;</code>
+            </p>
+        </div>
+    </div>
+
+    <!-- Декоративные элементы -->
+    <div class="floating-elements">
+        <div class="floating alien">👽</div>
+        <div class="floating ufo">🛸</div>
+        <div class="floating planet">🪐</div>
+        <div class="floating star">⭐</div>
+    </div>
+</div>
+
+<script>
+    // Минимальный JS только для этой страницы
+    function updateServerTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ru-RU');
+        document.getElementById('server-time').textContent = timeString;
+    }
+
+    function showFunFact() {
+        const fact = document.getElementById('fun-fact');
+        fact.classList.toggle('hidden');
+    }
+
+    // Обновляем время каждую секунду
+    updateServerTime();
+    setInterval(updateServerTime, 1000);
+
+    // Анимация для цифр
+    document.querySelectorAll('.digit').forEach((digit, index) => {
+        setTimeout(() => {
+            digit.style.opacity = '1';
+            digit.style.transform = 'translateY(0)';
+        }, index * 300);
+    });
+</script>
+</body>
+</html>
