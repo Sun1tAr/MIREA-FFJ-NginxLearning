@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGINX Learning Lab</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <!-- Терминал-заголовок -->
+    <div class="terminal-header">
+        <div class="terminal-buttons">
+            <span class="close"></span>
+            <span class="minimize"></span>
+            <span class="maximize"></span>
+        </div>
+        <span class="terminal-title">root@nginx-lab:~# learning_nginx.sh</span>
+    </div>
+
+    <!-- Контент в стиле терминала -->
+    <div class="terminal-body">
+        <div class="command-line">
+            <span class="prompt">root@nginx-lab:~#</span>
+            <span class="command">cat welcome_message.txt</span>
+        </div>
+
+        <div class="output">
+            <h1><i class="fas fa-server"></i> NGINX LEARNING LAB</h1>
+            <p class="subtitle">Здесь я изучаю веб-серверы как настоящий хакер! <i class="fas fa-code"></i></p>
+
+            <div class="ascii-art">
+                    <pre>
+   _   _   ___   _   _  _____
+  | \ | | / _ \ | \ | ||  ___|
+  |  \| |/ /_\ \|  \| || |__
+  | . ` ||  _  || . ` ||  __|
+  | |\  || | | || |\  || |___
+  \_| \_/\_| |_/\_| \_/\____/
+                    </pre>
+            </div>
+
+            <div class="status-panel">
+                <div class="status-item">
+                    <span class="status-label"><i class="fas fa-plug"></i> Сервер:</span>
+                    <span class="status-value running">RUNNING</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fas fa-network-wired"></i> Порт:</span>
+                    <span class="status-value">8083/tcp</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fas fa-shield-alt"></i> SSL:</span>
+                    <span class="status-value">8443/tcp</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fas fa-cogs"></i> Контейнер:</span>
+                    <span class="status-value">nginx-ubuntu:22.04</span>
+                </div>
+            </div>
+
+            <div class="command-line">
+                <span class="prompt">root@nginx-lab:~#</span>
+                <span class="command">nginx -t</span>
+            </div>
+            <div class="output success">
+                <i class="fas fa-check-circle"></i> nginx: configuration file /etc/nginx/nginx.conf test is successful
+            </div>
+
+            <div class="lessons">
+                <h2><i class="fas fa-graduation-cap"></i> Что я уже изучил:</h2>
+                <ul>
+                    <li><i class="fas fa-check"></i> Установка NGINX в Docker контейнер</li>
+                    <li><i class="fas fa-check"></i> Настройка виртуальных хостов</li>
+                    <li><i class="fas fa-spinner"></i> Reverse proxy и load balancing</li>
+                    <li><i class="fas fa-hourglass-start"></i> SSL/TLS сертификаты</li>
+                    <li><i class="fas fa-hourglass-start"></i> Кэширование и оптимизация</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">/etc/nginx/conf.d/learn.conf</div>
+                <pre><code>server {
+    listen 80;
+    server_name nginx-lab.local;
+
+    location / {
+        root /var/www/html;
+        index index.html;
+        try_files $uri $uri/ =404;
+    }
+
+    location /status {
+        stub_status on;
+        access_log off;
+    }
+
+    location ~ \.css$ {
+        add_header Content-Type text/css;
+    }
+}</code></pre>
+            </div>
+
+            <div class="fun-facts">
+                <h2><i class="fas fa-lightbulb"></i> Интересные факты:</h2>
+                <div class="fact">
+                    <i class="fas fa-bolt"></i> NGINX произносится как "Engine-X"
+                </div>
+                <div class="fact">
+                    <i class="fas fa-rocket"></i> Обрабатывает до 50,000 запросов в секунду
+                </div>
+                <div class="fact">
+                    <i class="fas fa-globe"></i> Используется Netflix, Dropbox, WordPress.com
+                </div>
+            </div>
+
+            <div class="command-line">
+                <span class="prompt">root@nginx-lab:~#</span>
+                <span class="command">curl -I http://localhost/</span>
+            </div>
+            <div class="output">
+                HTTP/1.1 200 OK<br>
+                Server: nginx/1.18.0 (Ubuntu)<br>
+                Date: <span id="current-date"></span><br>
+                Content-Type: text/html<br>
+                Connection: keep-alive
+            </div>
+
+            <div class="hackerman">
+                <p><i class="fas fa-terminal"></i> <span class="typing">$> Взламываю главный сервер... [||||||||||] 100%</span></p>
+                <p><i class="fas fa-laugh-wink"></i> <span class="joke">Шучу, я же ответственный системный администратор!</span></p>
+            </div>
+
+            <div class="footer">
+                <p>Страница сгенерирована в Docker контейнере | <i class="fas fa-heart"></i> Изучай NGINX!</p>
+                <div class="social">
+                    <button onclick="reloadPage()"><i class="fas fa-sync-alt"></i> Перезагрузить</button>
+                    <button onclick="showSecret()"><i class="fas fa-key"></i> Секретная кнопка</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер-консоль -->
+    <div class="terminal-footer">
+        <span class="blinking-cursor">_</span>
+        <span class="footer-text">Нажми F12 для Developer Tools или проверь логи в /var/log/nginx/</span>
+    </div>
+</div>
+
+<div id="secret-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="hideSecret()">&times;</span>
+        <h2><i class="fas fa-unlock-alt"></i> Секретная информация</h2>
+        <p>Ты обнаружил Easter Egg! Вот секретный код для NGINX:</p>
+        <div class="secret-code">
+            location /secret {
+            return 418 "Я чайник! 🫖";
+            add_header X-NGINX-Master true;
+            }
+        </div>
+        <p>Добавь этот блок в конфиг и перезагрузи NGINX:</p>
+        <code>docker exec nginx-ubuntu nginx -s reload</code>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
